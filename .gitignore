@@ -1,0 +1,17 @@
+.env
+.venv/
+.venv312/
+.cache/
+.edge-preview*/
+__pycache__/
+.pytest_cache/
+*.pyc
+reports/*.json
+reports/archive/*.json
+!reports/evaluation-current.json
+!reports/evaluation-current-312.json
+!reports/shardul-extra-local.json
+!reports/holdout-local-new.json
+!reports/gemini-current-rerun.json
+!reports/gemini-current-interrupted.json
+!reports/shardul-extra-gemini-current-interrupted.json

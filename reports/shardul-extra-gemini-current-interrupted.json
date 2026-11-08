@@ -1,0 +1,30 @@
+{
+  "status": "interrupted",
+  "passed": 0,
+  "failed": 0,
+  "unavailable": 1,
+  "attempted": 1,
+  "planned_total": 8,
+  "accuracy_pct": null,
+  "median_latency_ms": 61281.252,
+  "mode": "gemini_only",
+  "note": "Supplied cases are development cases, not unseen holdout questions. A provider failure stops the live run and is not counted as a model accuracy miss.",
+  "cases": [
+    {
+      "id": 101,
+      "question": "How many funds are marked Passive?",
+      "pass": null,
+      "route": "error",
+      "latency_ms": 61281.2517,
+      "actual_columns": null,
+      "actual_rows": null,
+      "expected_rows": [
+        [
+          3
+        ]
+      ],
+      "evidence": null,
+      "error": "Gemini did not respond within 60 seconds. Check connection or retry; a late result can be reused."
+    }
+  ]
+}

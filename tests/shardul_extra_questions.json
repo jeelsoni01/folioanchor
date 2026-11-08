@@ -1,0 +1,12 @@
+{
+  "questions": [
+    {"id": 101, "type": "text2sql", "question": "How many funds are marked Passive?", "ground_truth": {"sql_query": "SELECT COUNT(*) FROM portfolios WHERE status='Passive'"}},
+    {"id": 102, "type": "text2sql", "question": "List portfolio names with AUM above 30 million, from highest AUM to lowest.", "ordered": true, "ground_truth": {"sql_query": "SELECT portfolio_name FROM portfolios WHERE total_aum > 30000000 ORDER BY total_aum DESC"}},
+    {"id": 103, "type": "exposure_calculator", "question": "Break down the balanced portfolio by stock sector using its supplied portfolio weights.", "ground_truth": {"parameters": {"portfolio_name": "Balanced Portfolio"}}},
+    {"id": 104, "type": "exposure_calculator", "question": "What is the sector exposure of Fixed Income Plus?", "ground_truth": {"parameters": {"portfolio_name": "Fixed Income Plus"}}},
+    {"id": 105, "type": "exposure_calculator", "question": "Show sector allocations for Total Stock Market Index Fund.", "ground_truth": {"parameters": {"portfolio_name": "Total Stock Market Index Fund"}}},
+    {"id": 106, "type": "text2sql", "question": "How many securities are bonds?", "ground_truth": {"sql_query": "SELECT COUNT(*) FROM securities WHERE asset_type='Bond'"}},
+    {"id": 107, "type": "text2sql", "question": "List the names of portfolios whose recorded AUM exceeds one billion.", "ground_truth": {"sql_query": "SELECT portfolio_name FROM portfolios WHERE total_aum>1000000000"}},
+    {"id": 108, "type": "exposure_calculator", "question": "How is international equity distributed across sectors?", "ground_truth": {"parameters": {"portfolio_name": "International Equity Fund"}}}
+  ]
+}

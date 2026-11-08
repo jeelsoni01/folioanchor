@@ -1,0 +1,13 @@
+{
+  "questions": [
+    {"id": 101, "type": "text2sql", "question": "How many securities in this snapshot are bonds?", "ground_truth": {"sql_query": "SELECT COUNT(*) FROM securities WHERE asset_type='Bond'"}},
+    {"id": 102, "type": "text2sql", "question": "Which portfolios have no performance records? List their names.", "ground_truth": {"sql_query": "SELECT p.portfolio_name FROM portfolios p LEFT JOIN portfolio_performance pp ON p.portfolio_id=pp.portfolio_id WHERE pp.portfolio_id IS NULL ORDER BY p.portfolio_name"}},
+    {"id": 103, "type": "text2sql", "ordered": true, "question": "List passive portfolio names and their AUM, largest first.", "ground_truth": {"sql_query": "SELECT portfolio_name,total_aum FROM portfolios WHERE status='Passive' ORDER BY total_aum DESC"}},
+    {"id": 104, "type": "exposure_calculator", "question": "Show the sector allocation for the Balanced Portfolio.", "ground_truth": {"parameters": {"portfolio_name": "Balanced Portfolio"}}},
+    {"id": 105, "type": "exposure_calculator", "question": "What is the equity-normalized sector exposure for the Balanced Portfolio?", "ground_truth": {"parameters": {"portfolio_name": "Balanced Portfolio", "basis": "equity"}}},
+    {"id": 106, "type": "text2sql", "question": "What is the latest performance date for each portfolio with performance data?", "ground_truth": {"sql_query": "SELECT p.portfolio_name,MAX(pp.performance_date) AS latest_date FROM portfolios p JOIN portfolio_performance pp USING(portfolio_id) GROUP BY p.portfolio_id ORDER BY p.portfolio_name"}},
+    {"id": 107, "type": "text2sql", "ranked_by": "last_desc", "question": "Which portfolios hold both AAPL and MSFT, and what is their combined recorded weight as a percentage, highest first?", "ground_truth": {"sql_query": "SELECT p.portfolio_name,ROUND(SUM(h.current_weight)*100,2) AS combined_pct FROM portfolios p JOIN holdings h USING(portfolio_id) JOIN securities s USING(security_id) WHERE s.symbol IN ('AAPL','MSFT') GROUP BY p.portfolio_id HAVING COUNT(DISTINCT s.symbol)=2 ORDER BY combined_pct DESC"}},
+    {"id": 108, "type": "text2sql", "ordered": true, "question": "Show the three portfolios with the largest recorded AUM.", "ground_truth": {"sql_query": "SELECT portfolio_name,total_aum FROM portfolios ORDER BY total_aum DESC LIMIT 3"}},
+    {"id": 109, "type": "exposure_calculator", "question": "What is the stock-sector exposure of Fixed Income Plus?", "ground_truth": {"parameters": {"portfolio_name": "Fixed Income Plus"}}}
+  ]
+}

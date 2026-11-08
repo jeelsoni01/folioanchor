@@ -1,0 +1,731 @@
+{
+  "status": "complete",
+  "passed": 10,
+  "failed": 0,
+  "unavailable": 0,
+  "attempted": 10,
+  "planned_total": 10,
+  "accuracy_pct": 100.0,
+  "median_latency_ms": 1.326,
+  "mode": "hybrid",
+  "note": "Supplied cases are development cases, not unseen holdout questions. A provider failure stops the live run and is not counted as a model accuracy miss.",
+  "cases": [
+    {
+      "id": 1,
+      "question": "How many portfolios do we have in total?",
+      "pass": true,
+      "route": "fast_sql",
+      "latency_ms": 6.2635,
+      "actual_columns": [
+        "portfolio_count"
+      ],
+      "actual_rows": [
+        [
+          13
+        ]
+      ],
+      "expected_rows": [
+        [
+          13
+        ]
+      ],
+      "evidence": {
+        "sql": "SELECT COUNT(*) AS portfolio_count FROM portfolios",
+        "parameters": {}
+      },
+      "error": null
+    },
+    {
+      "id": 2,
+      "question": "What are the names of all active portfolios?",
+      "pass": true,
+      "route": "fast_sql",
+      "latency_ms": 0.9921,
+      "actual_columns": [
+        "portfolio_name"
+      ],
+      "actual_rows": [
+        [
+          "Balanced Portfolio"
+        ],
+        [
+          "Conservative Income Fund"
+        ],
+        [
+          "Dividend Aristocrats Fund"
+        ],
+        [
+          "ESG Sustainable Fund"
+        ],
+        [
+          "Emerging Markets Fund"
+        ],
+        [
+          "Fixed Income Plus"
+        ],
+        [
+          "Growth Equity Fund"
+        ],
+        [
+          "International Equity Fund"
+        ],
+        [
+          "Small Cap Value Fund"
+        ],
+        [
+          "Tech Innovation Fund"
+        ]
+      ],
+      "expected_rows": [
+        [
+          "Growth Equity Fund"
+        ],
+        [
+          "Conservative Income Fund"
+        ],
+        [
+          "Tech Innovation Fund"
+        ],
+        [
+          "Balanced Portfolio"
+        ],
+        [
+          "ESG Sustainable Fund"
+        ],
+        [
+          "Small Cap Value Fund"
+        ],
+        [
+          "International Equity Fund"
+        ],
+        [
+          "Fixed Income Plus"
+        ],
+        [
+          "Dividend Aristocrats Fund"
+        ],
+        [
+          "Emerging Markets Fund"
+        ]
+      ],
+      "evidence": {
+        "sql": "SELECT portfolio_name FROM portfolios WHERE status = :status ORDER BY portfolio_name",
+        "parameters": {
+          "status": "Active"
+        }
+      },
+      "error": null
+    },
+    {
+      "id": 3,
+      "question": "Which securities are in the Technology sector?",
+      "pass": true,
+      "route": "fast_sql",
+      "latency_ms": 1.1987,
+      "actual_columns": [
+        "symbol",
+        "company_name"
+      ],
+      "actual_rows": [
+        [
+          "AAPL",
+          "Apple Inc."
+        ],
+        [
+          "AVGO",
+          "Broadcom Inc."
+        ],
+        [
+          "CRM",
+          "Salesforce Inc."
+        ],
+        [
+          "GOOGL",
+          "Alphabet Inc."
+        ],
+        [
+          "META",
+          "Meta Platforms Inc."
+        ],
+        [
+          "MSFT",
+          "Microsoft Corporation"
+        ],
+        [
+          "NVDA",
+          "NVIDIA Corporation"
+        ],
+        [
+          "ORCL",
+          "Oracle Corporation"
+        ]
+      ],
+      "expected_rows": [
+        [
+          "AAPL",
+          "Apple Inc."
+        ],
+        [
+          "MSFT",
+          "Microsoft Corporation"
+        ],
+        [
+          "GOOGL",
+          "Alphabet Inc."
+        ],
+        [
+          "META",
+          "Meta Platforms Inc."
+        ],
+        [
+          "NVDA",
+          "NVIDIA Corporation"
+        ],
+        [
+          "AVGO",
+          "Broadcom Inc."
+        ],
+        [
+          "CRM",
+          "Salesforce Inc."
+        ],
+        [
+          "ORCL",
+          "Oracle Corporation"
+        ]
+      ],
+      "evidence": {
+        "sql": "SELECT s.symbol, s.company_name FROM securities s JOIN sectors sec ON sec.sector_id=s.sector_id WHERE sec.sector_name=:sector ORDER BY s.symbol",
+        "parameters": {
+          "sector": "Technology"
+        }
+      },
+      "error": null
+    },
+    {
+      "id": 4,
+      "question": "What is the total Assets Under Management (AUM) for portfolios with high target risk level?",
+      "pass": true,
+      "route": "fast_sql",
+      "latency_ms": 1.8784,
+      "actual_columns": [
+        "total_aum"
+      ],
+      "actual_rows": [
+        [
+          85000000.0
+        ]
+      ],
+      "expected_rows": [
+        [
+          85000000.0
+        ]
+      ],
+      "evidence": {
+        "sql": "SELECT SUM(total_aum) AS total_aum FROM portfolios WHERE lower(target_risk_level) = :risk",
+        "parameters": {
+          "risk": "high"
+        }
+      },
+      "error": null
+    },
+    {
+      "id": 5,
+      "question": "Show me the top 5 holdings by cost basis in the Growth Equity Fund",
+      "pass": true,
+      "route": "fast_sql",
+      "latency_ms": 2.2789,
+      "actual_columns": [
+        "holding_id",
+        "symbol",
+        "company_name",
+        "quantity",
+        "cost_basis"
+      ],
+      "actual_rows": [
+        [
+          1,
+          "AAPL",
+          "Apple Inc.",
+          2500.0,
+          438000.0
+        ],
+        [
+          8,
+          "AMZN",
+          "Amazon.com Inc.",
+          100.0,
+          320000.0
+        ],
+        [
+          2,
+          "MSFT",
+          "Microsoft Corporation",
+          800.0,
+          304400.0
+        ],
+        [
+          3,
+          "NVDA",
+          "NVIDIA Corporation",
+          400.0,
+          288040.0
+        ],
+        [
+          6,
+          "CRM",
+          "Salesforce Inc.",
+          1000.0,
+          185400.0
+        ]
+      ],
+      "expected_rows": [
+        [
+          1,
+          "AAPL",
+          "Apple Inc.",
+          2500.0,
+          438000.0
+        ],
+        [
+          8,
+          "AMZN",
+          "Amazon.com Inc.",
+          100.0,
+          320000.0
+        ],
+        [
+          2,
+          "MSFT",
+          "Microsoft Corporation",
+          800.0,
+          304400.0
+        ],
+        [
+          3,
+          "NVDA",
+          "NVIDIA Corporation",
+          400.0,
+          288040.0
+        ],
+        [
+          6,
+          "CRM",
+          "Salesforce Inc.",
+          1000.0,
+          185400.0
+        ]
+      ],
+      "evidence": {
+        "sql": "SELECT h.holding_id, s.symbol, s.company_name, h.quantity, h.cost_basis FROM holdings h JOIN securities s ON s.security_id=h.security_id JOIN portfolios p ON p.portfolio_id=h.portfolio_id WHERE p.portfolio_name=:name ORDER BY h.cost_basis DESC LIMIT :n",
+        "parameters": {
+          "name": "Growth Equity Fund",
+          "n": 5
+        }
+      },
+      "error": null
+    },
+    {
+      "id": 6,
+      "question": "What is the average current price of securities in each sector?",
+      "pass": true,
+      "route": "fast_sql",
+      "latency_ms": 0.6082,
+      "actual_columns": [
+        "sector_name",
+        "avg_price"
+      ],
+      "actual_rows": [
+        [
+          "Consumer Discretionary",
+          3380.0
+        ],
+        [
+          "Technology",
+          719.245
+        ],
+        [
+          "Healthcare",
+          285.17
+        ],
+        [
+          "Automotive",
+          248.5
+        ],
+        [
+          "Financials",
+          201.2125
+        ],
+        [
+          "Consumer Staples",
+          173.8625
+        ],
+        [
+          "Energy",
+          128.575
+        ]
+      ],
+      "expected_rows": [
+        [
+          "Consumer Discretionary",
+          3380.0
+        ],
+        [
+          "Technology",
+          719.245
+        ],
+        [
+          "Healthcare",
+          285.17
+        ],
+        [
+          "Automotive",
+          248.5
+        ],
+        [
+          "Financials",
+          201.2125
+        ],
+        [
+          "Consumer Staples",
+          173.8625
+        ],
+        [
+          "Energy",
+          128.575
+        ]
+      ],
+      "evidence": {
+        "sql": "SELECT sec.sector_name, AVG(s.current_price) AS avg_price FROM securities s JOIN sectors sec ON sec.sector_id=s.sector_id GROUP BY sec.sector_name ORDER BY avg_price DESC",
+        "parameters": {}
+      },
+      "error": null
+    },
+    {
+      "id": 7,
+      "question": "For each portfolio, show the total value of Technology sector holdings and what percentage it represents of the total portfolio value",
+      "pass": true,
+      "route": "fast_sql",
+      "latency_ms": 1.8355,
+      "actual_columns": [
+        "portfolio_name",
+        "sector_value",
+        "total_value",
+        "sector_percentage"
+      ],
+      "actual_rows": [
+        [
+          "Tech Innovation Fund",
+          1565292.5,
+          1565292.5,
+          100.0
+        ],
+        [
+          "Growth Equity Fund",
+          1866148.0,
+          2204148.0,
+          84.67
+        ],
+        [
+          "Total International Index Fund",
+          1427086.0,
+          2281686.0,
+          62.55
+        ],
+        [
+          "International Equity Fund",
+          346888.0,
+          734928.0,
+          47.2
+        ],
+        [
+          "Total Stock Market Index Fund",
+          3093520.0,
+          6622340.0,
+          46.71
+        ],
+        [
+          "Balanced Portfolio",
+          388704.0,
+          1073279.0,
+          36.22
+        ],
+        [
+          "Emerging Markets Fund",
+          339095.0,
+          1045100.0,
+          32.45
+        ],
+        [
+          "ESG Sustainable Fund",
+          272978.0,
+          1007228.0,
+          27.1
+        ]
+      ],
+      "expected_rows": [
+        [
+          "Tech Innovation Fund",
+          1565292.5,
+          1565292.5,
+          100.0
+        ],
+        [
+          "Growth Equity Fund",
+          1866148.0,
+          2204148.0,
+          84.67
+        ],
+        [
+          "Total International Index Fund",
+          1427086.0,
+          2281686.0,
+          62.55
+        ],
+        [
+          "International Equity Fund",
+          346888.0,
+          734928.0,
+          47.2
+        ],
+        [
+          "Total Stock Market Index Fund",
+          3093520.0,
+          6622340.0,
+          46.71
+        ],
+        [
+          "Balanced Portfolio",
+          388704.0,
+          1073279.0,
+          36.22
+        ],
+        [
+          "Emerging Markets Fund",
+          339095.0,
+          1045100.0,
+          32.45
+        ],
+        [
+          "ESG Sustainable Fund",
+          272978.0,
+          1007228.0,
+          27.1
+        ]
+      ],
+      "evidence": {
+        "sql": "WITH sector_value AS (SELECT p.portfolio_id,p.portfolio_name,SUM(h.quantity*s.current_price) AS sector_value FROM portfolios p JOIN holdings h USING(portfolio_id) JOIN securities s USING(security_id) JOIN sectors sec USING(sector_id) WHERE sec.sector_name=:sector GROUP BY p.portfolio_id), total_value AS (SELECT p.portfolio_id,SUM(h.quantity*s.current_price) AS total_value FROM portfolios p JOIN holdings h USING(portfolio_id) JOIN securities s USING(security_id) GROUP BY p.portfolio_id) SELECT sv.portfolio_name,sv.sector_value,tv.total_value,ROUND(100.0*sv.sector_value/NULLIF(tv.total_value,0),2) AS sector_percentage FROM sector_value sv JOIN total_value tv USING(portfolio_id) ORDER BY sector_percentage DESC",
+        "parameters": {
+          "sector": "Technology"
+        }
+      },
+      "error": null
+    },
+    {
+      "id": 8,
+      "question": "Find portfolios that have holdings in more than 5 different sectors and show their diversification metrics",
+      "pass": true,
+      "route": "fast_sql",
+      "latency_ms": 1.2446,
+      "actual_columns": [
+        "portfolio_name",
+        "sector_count",
+        "total_holdings",
+        "diversification_ratio"
+      ],
+      "actual_rows": [
+        [
+          "Total Stock Market Index Fund",
+          6,
+          12,
+          0.5
+        ]
+      ],
+      "expected_rows": [
+        [
+          "Total Stock Market Index Fund",
+          6,
+          12,
+          0.5
+        ]
+      ],
+      "evidence": {
+        "sql": "WITH sector_count AS (SELECT p.portfolio_id,p.portfolio_name,COUNT(DISTINCT sec.sector_id) AS sector_count FROM portfolios p JOIN holdings h USING(portfolio_id) JOIN securities s USING(security_id) JOIN sectors sec USING(sector_id) WHERE s.asset_type='Stock' GROUP BY p.portfolio_id HAVING COUNT(DISTINCT sec.sector_id)>:minimum), holding_count AS (SELECT portfolio_id,COUNT(*) AS total_holdings FROM holdings GROUP BY portfolio_id) SELECT sc.portfolio_name,sc.sector_count,hc.total_holdings,ROUND(CAST(sc.sector_count AS REAL)/hc.total_holdings,3) AS diversification_ratio FROM sector_count sc JOIN holding_count hc USING(portfolio_id) ORDER BY diversification_ratio DESC",
+        "parameters": {
+          "minimum": 5
+        }
+      },
+      "error": null
+    },
+    {
+      "id": 9,
+      "question": "What are the sector exposures for the Tech Innovation Fund?",
+      "pass": true,
+      "route": "fast_exposure",
+      "latency_ms": 1.2773,
+      "actual_columns": [
+        "sector",
+        "exposure_pct"
+      ],
+      "actual_rows": [
+        [
+          "Technology",
+          100.0
+        ]
+      ],
+      "expected_rows": [
+        [
+          "Technology",
+          100.0
+        ]
+      ],
+      "evidence": {
+        "portfolio": "Tech Innovation Fund",
+        "basis": "portfolio",
+        "formula": "100 \u00d7 stock sector weight",
+        "equity_weight_pct": 100.0,
+        "bond_weight_pct": 0.0,
+        "contributions": [
+          {
+            "symbol": "MSFT",
+            "sector": "Technology",
+            "portfolio_weight_pct": 18.0
+          },
+          {
+            "symbol": "AAPL",
+            "sector": "Technology",
+            "portfolio_weight_pct": 15.0
+          },
+          {
+            "symbol": "NVDA",
+            "sector": "Technology",
+            "portfolio_weight_pct": 15.0
+          },
+          {
+            "symbol": "GOOGL",
+            "sector": "Technology",
+            "portfolio_weight_pct": 12.0
+          },
+          {
+            "symbol": "CRM",
+            "sector": "Technology",
+            "portfolio_weight_pct": 12.0
+          },
+          {
+            "symbol": "ORCL",
+            "sector": "Technology",
+            "portfolio_weight_pct": 10.0
+          },
+          {
+            "symbol": "META",
+            "sector": "Technology",
+            "portfolio_weight_pct": 10.0
+          },
+          {
+            "symbol": "AVGO",
+            "sector": "Technology",
+            "portfolio_weight_pct": 8.0
+          }
+        ]
+      },
+      "error": null
+    },
+    {
+      "id": 10,
+      "question": "Calculate the sector exposure breakdown for international equity",
+      "pass": true,
+      "route": "fast_exposure",
+      "latency_ms": 1.3738,
+      "actual_columns": [
+        "sector",
+        "exposure_pct"
+      ],
+      "actual_rows": [
+        [
+          "Energy",
+          38.0
+        ],
+        [
+          "Technology",
+          36.0
+        ],
+        [
+          "Automotive",
+          15.0
+        ],
+        [
+          "Consumer Staples",
+          11.0
+        ]
+      ],
+      "expected_rows": [
+        [
+          "Technology",
+          36.0
+        ],
+        [
+          "Automotive",
+          15.0
+        ],
+        [
+          "Energy",
+          38.0
+        ],
+        [
+          "Consumer Staples",
+          11.0
+        ]
+      ],
+      "evidence": {
+        "portfolio": "International Equity Fund",
+        "basis": "portfolio",
+        "formula": "100 \u00d7 stock sector weight",
+        "equity_weight_pct": 100.0,
+        "bond_weight_pct": 0.0,
+        "contributions": [
+          {
+            "symbol": "TSLA",
+            "sector": "Automotive",
+            "portfolio_weight_pct": 15.0
+          },
+          {
+            "symbol": "HD",
+            "sector": "Consumer Staples",
+            "portfolio_weight_pct": 11.0
+          },
+          {
+            "symbol": "CVX",
+            "sector": "Energy",
+            "portfolio_weight_pct": 20.0
+          },
+          {
+            "symbol": "XOM",
+            "sector": "Energy",
+            "portfolio_weight_pct": 18.0
+          },
+          {
+            "symbol": "GOOGL",
+            "sector": "Technology",
+            "portfolio_weight_pct": 12.0
+          },
+          {
+            "symbol": "AVGO",
+            "sector": "Technology",
+            "portfolio_weight_pct": 10.0
+          },
+          {
+            "symbol": "AAPL",
+            "sector": "Technology",
+            "portfolio_weight_pct": 8.0
+          },
+          {
+            "symbol": "MSFT",
+            "sector": "Technology",
+            "portfolio_weight_pct": 6.0
+          }
+        ]
+      },
+      "error": null
+    }
+  ]
+}

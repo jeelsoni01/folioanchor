@@ -1,0 +1,497 @@
+{
+  "status": "complete",
+  "passed": 9,
+  "failed": 0,
+  "unavailable": 0,
+  "attempted": 9,
+  "planned_total": 9,
+  "accuracy_pct": 100.0,
+  "median_latency_ms": 1.066,
+  "mode": "hybrid",
+  "note": "Supplied cases are development cases, not unseen holdout questions. A provider failure stops the live run and is not counted as a model accuracy miss.",
+  "cases": [
+    {
+      "id": 101,
+      "question": "How many securities in this snapshot are bonds?",
+      "pass": true,
+      "route": "fast_sql",
+      "latency_ms": 5.397,
+      "actual_columns": [
+        "security_count"
+      ],
+      "actual_rows": [
+        [
+          5
+        ]
+      ],
+      "expected_rows": [
+        [
+          5
+        ]
+      ],
+      "evidence": {
+        "sql": "SELECT COUNT(*) AS security_count FROM securities WHERE asset_type=:asset_type",
+        "parameters": {
+          "asset_type": "Bond"
+        }
+      },
+      "error": null
+    },
+    {
+      "id": 102,
+      "question": "Which portfolios have no performance records? List their names.",
+      "pass": true,
+      "route": "fast_sql",
+      "latency_ms": 2.5965,
+      "actual_columns": [
+        "portfolio_name"
+      ],
+      "actual_rows": [
+        [
+          "Dividend Aristocrats Fund"
+        ],
+        [
+          "ESG Sustainable Fund"
+        ],
+        [
+          "Emerging Markets Fund"
+        ],
+        [
+          "Fixed Income Plus"
+        ],
+        [
+          "International Equity Fund"
+        ],
+        [
+          "Small Cap Value Fund"
+        ],
+        [
+          "Total Bond Market Index Fund"
+        ],
+        [
+          "Total International Index Fund"
+        ],
+        [
+          "Total Stock Market Index Fund"
+        ]
+      ],
+      "expected_rows": [
+        [
+          "Dividend Aristocrats Fund"
+        ],
+        [
+          "ESG Sustainable Fund"
+        ],
+        [
+          "Emerging Markets Fund"
+        ],
+        [
+          "Fixed Income Plus"
+        ],
+        [
+          "International Equity Fund"
+        ],
+        [
+          "Small Cap Value Fund"
+        ],
+        [
+          "Total Bond Market Index Fund"
+        ],
+        [
+          "Total International Index Fund"
+        ],
+        [
+          "Total Stock Market Index Fund"
+        ]
+      ],
+      "evidence": {
+        "sql": "SELECT p.portfolio_name FROM portfolios p LEFT JOIN portfolio_performance pp ON p.portfolio_id=pp.portfolio_id WHERE pp.portfolio_id IS NULL ORDER BY p.portfolio_name",
+        "parameters": {}
+      },
+      "error": null
+    },
+    {
+      "id": 103,
+      "question": "List passive portfolio names and their AUM, largest first.",
+      "pass": true,
+      "route": "fast_sql",
+      "latency_ms": 0.8332,
+      "actual_columns": [
+        "portfolio_name",
+        "total_aum"
+      ],
+      "actual_rows": [
+        [
+          "Total Stock Market Index Fund",
+          45000000.0
+        ],
+        [
+          "Total Bond Market Index Fund",
+          30000000.0
+        ],
+        [
+          "Total International Index Fund",
+          25000000.0
+        ]
+      ],
+      "expected_rows": [
+        [
+          "Total Stock Market Index Fund",
+          45000000.0
+        ],
+        [
+          "Total Bond Market Index Fund",
+          30000000.0
+        ],
+        [
+          "Total International Index Fund",
+          25000000.0
+        ]
+      ],
+      "evidence": {
+        "sql": "SELECT portfolio_name,total_aum FROM portfolios WHERE lower(status)=:status ORDER BY total_aum DESC",
+        "parameters": {
+          "status": "passive"
+        }
+      },
+      "error": null
+    },
+    {
+      "id": 104,
+      "question": "Show the sector allocation for the Balanced Portfolio.",
+      "pass": true,
+      "route": "fast_exposure",
+      "latency_ms": 1.4574,
+      "actual_columns": [
+        "sector",
+        "exposure_pct"
+      ],
+      "actual_rows": [
+        [
+          "Technology",
+          22.0
+        ],
+        [
+          "Financials",
+          8.0
+        ],
+        [
+          "Healthcare",
+          6.0
+        ]
+      ],
+      "expected_rows": [
+        [
+          "Technology",
+          22.0
+        ],
+        [
+          "Financials",
+          8.0
+        ],
+        [
+          "Healthcare",
+          6.0
+        ]
+      ],
+      "evidence": {
+        "portfolio": "Balanced Portfolio",
+        "basis": "portfolio",
+        "formula": "100 \u00d7 stock sector weight",
+        "equity_weight_pct": 36.0,
+        "bond_weight_pct": 64.0,
+        "contributions": [
+          {
+            "symbol": "JPM",
+            "sector": "Financials",
+            "portfolio_weight_pct": 8.0
+          },
+          {
+            "symbol": "JNJ",
+            "sector": "Healthcare",
+            "portfolio_weight_pct": 6.0
+          },
+          {
+            "symbol": "AAPL",
+            "sector": "Technology",
+            "portfolio_weight_pct": 12.0
+          },
+          {
+            "symbol": "MSFT",
+            "sector": "Technology",
+            "portfolio_weight_pct": 10.0
+          }
+        ]
+      },
+      "error": null
+    },
+    {
+      "id": 105,
+      "question": "What is the equity-normalized sector exposure for the Balanced Portfolio?",
+      "pass": true,
+      "route": "fast_exposure",
+      "latency_ms": 0.5537,
+      "actual_columns": [
+        "sector",
+        "exposure_pct"
+      ],
+      "actual_rows": [
+        [
+          "Technology",
+          61.111111
+        ],
+        [
+          "Financials",
+          22.222222
+        ],
+        [
+          "Healthcare",
+          16.666667
+        ]
+      ],
+      "expected_rows": [
+        [
+          "Technology",
+          61.111111
+        ],
+        [
+          "Financials",
+          22.222222
+        ],
+        [
+          "Healthcare",
+          16.666667
+        ]
+      ],
+      "evidence": {
+        "portfolio": "Balanced Portfolio",
+        "basis": "equity",
+        "formula": "100 \u00d7 stock sector weight / total stock weight",
+        "equity_weight_pct": 36.0,
+        "bond_weight_pct": 64.0,
+        "contributions": [
+          {
+            "symbol": "JPM",
+            "sector": "Financials",
+            "portfolio_weight_pct": 8.0
+          },
+          {
+            "symbol": "JNJ",
+            "sector": "Healthcare",
+            "portfolio_weight_pct": 6.0
+          },
+          {
+            "symbol": "AAPL",
+            "sector": "Technology",
+            "portfolio_weight_pct": 12.0
+          },
+          {
+            "symbol": "MSFT",
+            "sector": "Technology",
+            "portfolio_weight_pct": 10.0
+          }
+        ]
+      },
+      "error": null
+    },
+    {
+      "id": 106,
+      "question": "What is the latest performance date for each portfolio with performance data?",
+      "pass": true,
+      "route": "fast_sql",
+      "latency_ms": 1.0658,
+      "actual_columns": [
+        "portfolio_name",
+        "latest_date"
+      ],
+      "actual_rows": [
+        [
+          "Balanced Portfolio",
+          "2023-10-09"
+        ],
+        [
+          "Conservative Income Fund",
+          "2023-10-09"
+        ],
+        [
+          "Growth Equity Fund",
+          "2023-10-09"
+        ],
+        [
+          "Tech Innovation Fund",
+          "2023-10-09"
+        ]
+      ],
+      "expected_rows": [
+        [
+          "Balanced Portfolio",
+          "2023-10-09"
+        ],
+        [
+          "Conservative Income Fund",
+          "2023-10-09"
+        ],
+        [
+          "Growth Equity Fund",
+          "2023-10-09"
+        ],
+        [
+          "Tech Innovation Fund",
+          "2023-10-09"
+        ]
+      ],
+      "evidence": {
+        "sql": "SELECT p.portfolio_name,MAX(pp.performance_date) AS latest_date FROM portfolios p JOIN portfolio_performance pp USING(portfolio_id) GROUP BY p.portfolio_id ORDER BY p.portfolio_name",
+        "parameters": {}
+      },
+      "error": null
+    },
+    {
+      "id": 107,
+      "question": "Which portfolios hold both AAPL and MSFT, and what is their combined recorded weight as a percentage, highest first?",
+      "pass": true,
+      "route": "fast_sql",
+      "latency_ms": 2.1061,
+      "actual_columns": [
+        "portfolio_name",
+        "combined_pct"
+      ],
+      "actual_rows": [
+        [
+          "Growth Equity Fund",
+          40.0
+        ],
+        [
+          "Tech Innovation Fund",
+          33.0
+        ],
+        [
+          "Total Stock Market Index Fund",
+          27.0
+        ],
+        [
+          "ESG Sustainable Fund",
+          27.0
+        ],
+        [
+          "Balanced Portfolio",
+          22.0
+        ],
+        [
+          "Total International Index Fund",
+          14.0
+        ],
+        [
+          "International Equity Fund",
+          14.0
+        ]
+      ],
+      "expected_rows": [
+        [
+          "Growth Equity Fund",
+          40.0
+        ],
+        [
+          "Tech Innovation Fund",
+          33.0
+        ],
+        [
+          "Total Stock Market Index Fund",
+          27.0
+        ],
+        [
+          "ESG Sustainable Fund",
+          27.0
+        ],
+        [
+          "Balanced Portfolio",
+          22.0
+        ],
+        [
+          "Total International Index Fund",
+          14.0
+        ],
+        [
+          "International Equity Fund",
+          14.0
+        ]
+      ],
+      "evidence": {
+        "sql": "SELECT p.portfolio_name,ROUND(SUM(h.current_weight)*100,2) AS combined_pct FROM portfolios p JOIN holdings h USING(portfolio_id) JOIN securities s USING(security_id) WHERE s.symbol IN (:first,:second) GROUP BY p.portfolio_id HAVING COUNT(DISTINCT s.symbol)=2 ORDER BY combined_pct DESC",
+        "parameters": {
+          "first": "AAPL",
+          "second": "MSFT"
+        }
+      },
+      "error": null
+    },
+    {
+      "id": 108,
+      "question": "Show the three portfolios with the largest recorded AUM.",
+      "pass": true,
+      "route": "fast_sql",
+      "latency_ms": 0.5786,
+      "actual_columns": [
+        "portfolio_name",
+        "total_aum"
+      ],
+      "actual_rows": [
+        [
+          "Total Stock Market Index Fund",
+          45000000.0
+        ],
+        [
+          "Fixed Income Plus",
+          35000000.0
+        ],
+        [
+          "Tech Innovation Fund",
+          32000000.0
+        ]
+      ],
+      "expected_rows": [
+        [
+          "Total Stock Market Index Fund",
+          45000000.0
+        ],
+        [
+          "Fixed Income Plus",
+          35000000.0
+        ],
+        [
+          "Tech Innovation Fund",
+          32000000.0
+        ]
+      ],
+      "evidence": {
+        "sql": "SELECT portfolio_name,total_aum FROM portfolios ORDER BY total_aum DESC LIMIT :n",
+        "parameters": {
+          "n": 3
+        }
+      },
+      "error": null
+    },
+    {
+      "id": 109,
+      "question": "What is the stock-sector exposure of Fixed Income Plus?",
+      "pass": true,
+      "route": "fast_exposure",
+      "latency_ms": 0.7429,
+      "actual_columns": [
+        "sector",
+        "exposure_pct"
+      ],
+      "actual_rows": [],
+      "expected_rows": [],
+      "evidence": {
+        "portfolio": "Fixed Income Plus",
+        "basis": "portfolio",
+        "formula": "100 \u00d7 stock sector weight",
+        "equity_weight_pct": 0.0,
+        "bond_weight_pct": 100.0,
+        "contributions": []
+      },
+      "error": null
+    }
+  ]
+}
