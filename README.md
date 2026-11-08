@@ -15,7 +15,7 @@ python setup_project.py
 .\.venv\Scripts\python.exe -m jeel_portfolio
 ```
 
-`setup_project.py` creates `.venv`, installs `requirements-lock.txt`, and creates an empty `.env` only if one does not exist. On macOS/Linux, use `python3 setup_project.py` and replace `.\.venv\Scripts\python.exe` with `./.venv/bin/python`. The supplied ten questions and common local routes work without an API key. To use Gemini for other questions, put `GEMINI_API_KEY` in your local `.env`; never commit it. Python 3.12 and 3.13 passed the suite in existing local environments. A fresh install of this exact lock under 3.12 is pending because package downloads timed out here. The included GitHub Actions workflow will check fresh installs on Python 3.11–3.13 on Windows and Ubuntu after the repository is published.
+`setup_project.py` creates `.venv`, installs `requirements-lock.txt`, and creates an empty `.env` only if one does not exist. On macOS/Linux, use `python3 setup_project.py` and replace `.\.venv\Scripts\python.exe` with `./.venv/bin/python`. The supplied ten questions and common local routes work without an API key. To use Gemini for other questions, put `GEMINI_API_KEY` in your local `.env`; never commit it. [GitHub Actions verified fresh installs](https://github.com/jeelsoni01/pl-capital-portfolio-agent/actions/runs/42494568473) on Windows and Ubuntu with Python 3.11, 3.12, and 3.13: all six jobs passed their dependency check, 167 tests, and three local question sets. A separate local Python 3.12 download attempt timed out; the CI job completed that clean install successfully.
 
 Ask one question directly on Windows:
 
