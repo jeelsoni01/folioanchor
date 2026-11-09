@@ -1,30 +1,28 @@
 # 📊 Portfolio Intelligence
 
-**Ask in plain English. Audit every number.**
+**Portfolio questions. Clear answers. Visible math.**
 
-Turn plain-language portfolio questions into guarded SQL or deterministic sector calculations over the supplied data. Successful answers show the result, calculation route, and supporting evidence so a reviewer can check the numbers.
+Ask what a fund owns, compare sector exposure, and explore AUM or risk across portfolios. Portfolio Intelligence turns those questions into clear answers from the supplied holdings snapshot, with the numbers behind every result ready to inspect.
 
-**Jeel Nandha** · PL Capital AI Engineering exercise · Required Python CLI and evaluator · Optional Streamlit desk
+**Python + SQLite** · **Gemini planning** · **Streamlit workspace**
 
 **13 portfolios** · **95 holdings** · **30 securities** · **9 linked tables**
 
-> 📌 **Scope:** An independent exercise using a fixed historical sample. It is not an official PL Capital service or a live investment tool.
+> 📌 Built on a fixed historical sample. No live market feed or investment advice.
 
 ![Working portfolio desk: a question, ranked Technology exposure, a high-risk AUM answer, and the holdings explorer.](docs/demo.gif)
 
-[Deliverables](#what-it-delivers) · [Quick start](#quick-start) · [Examples](#try-it) · [Verification](#verify-the-project) · [Calculation guide](docs/CALCULATIONS.md) · [Original brief](assessment/README.md)
+[Features](#features) · [Quick start](#quick-start) · [Explore questions](#try-it) · [Verification](#verify-the-project) · [Calculation guide](docs/CALCULATIONS.md)
 
-## What it delivers
+## Features
 
-| Exercise item | Where to see it |
+| Feature | What it does |
 | --- | --- |
-| ✅ Natural-language SQL tool | Validated read-only queries in `portfolio_agent/`; inspect SQL and parameters in answer evidence |
-| ✅ Sector exposure calculator | Stock weights grouped by sector, with bonds excluded and both percentage bases explained |
-| ✅ Command-line agent | Interactive or one-question `python -m portfolio_agent` |
-| ✅ Ground-truth evaluator | `evaluate.py` independently checks the supplied ten questions |
-| ✅ Documentation and safe errors | Setup guide, calculation notes, provider diagnostics, and explicit failure messages |
-| ✨ Optional desk | Streamlit answers, portfolio explorer, evidence, and CSV export |
-| ✨ Optional speed path | Conservative local planning, hybrid calculations, and a dataset-aware answer cache |
+| 💬 **Ask naturally** | Explore portfolios and holdings in the CLI or Streamlit; Gemini plans unfamiliar in-scope questions. |
+| 📊 **Analyze exposure** | Calculate stock-sector weights on a whole-portfolio or equity-only basis, with bonds handled explicitly. |
+| 🔎 **Follow the evidence** | Inspect result rows, SQL and parameters, weight contributions, and calculation notes. |
+| ⚡ **Get fast repeat answers** | Common question patterns run locally; successful results can be reused from a dataset-aware cache. |
+| 🖥️ **Explore the snapshot** | Browse portfolios, sector allocations, and positions in the Streamlit desk; export results as CSV. |
 
 ## Quick start
 
@@ -51,7 +49,7 @@ Setup creates `.venv`, installs the pinned dependencies, checks them, and create
 
 ### 3. Run
 
-Required CLI on Windows:
+CLI on Windows:
 
 ```powershell
 .\.venv\Scripts\python.exe -m portfolio_agent
@@ -63,7 +61,7 @@ At `Ask>`, enter `How many portfolios do we have in total?` — expected answer:
 .\.venv\Scripts\python.exe -m portfolio_agent "What is the total AUM for portfolios with high target risk level?"
 ```
 
-Optional Streamlit desk:
+Streamlit desk:
 
 ```powershell
 .\.venv\Scripts\python.exe -m streamlit run app.py
@@ -163,4 +161,4 @@ The answer cache stores only successful answers, with keys tied to the data, sch
 
 ## Provenance and license
 
-Created by **Jeel Nandha** for the PL Capital AI Engineering exercise. The app is independent and is neither an official PL Capital service nor investment advice. Original code and documentation are [MIT licensed](LICENSE). The supplied assessment files and company mark have separate ownership and are excluded; see [third-party notices](THIRD_PARTY_NOTICES.md). The fixed dataset is historical sample data, not a live market feed.
+Created by **Jeel Nandha** for the PL Capital AI Engineering exercise. The app is independent and is neither an official PL Capital service nor investment advice. Original code and documentation are [MIT licensed](LICENSE). The supplied assessment files and company mark have separate ownership and are excluded; see [third-party notices](THIRD_PARTY_NOTICES.md). The fixed dataset is historical sample data, not a live market feed. The [original brief](assessment/README.md) is retained for context.
