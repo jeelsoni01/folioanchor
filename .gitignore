@@ -10,3 +10,4 @@ reports/archive/
 !reports/local-evaluation.json
 !reports/additional-local.json
 !reports/gemini-only.json
+!reports/additional-gemini.json

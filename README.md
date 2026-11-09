@@ -1,12 +1,30 @@
-# Portfolio Intelligence
+# 📊 Portfolio Intelligence
 
-Ask a question about the supplied portfolio snapshot. Get a grounded answer, then inspect the calculation and source rows.
+**Ask in plain English. Audit every number.**
 
-This is an independent implementation of PL Capital's AI Engineering exercise. The **command-line agent and evaluator** are the core deliverables; the Streamlit desk is an optional interface over the same code. The sample contains **13 portfolios, 95 holdings, 30 securities, and 9 linked tables**.
+Turn plain-language portfolio questions into guarded SQL or deterministic sector calculations over the supplied data. Successful answers show the result, calculation route, and supporting evidence so a reviewer can check the numbers.
+
+**Jeel Nandha** · PL Capital AI Engineering exercise · Required Python CLI and evaluator · Optional Streamlit desk
+
+**13 portfolios** · **95 holdings** · **30 securities** · **9 linked tables**
+
+> 📌 **Scope:** An independent exercise using a fixed historical sample. It is not an official PL Capital service or a live investment tool.
 
 ![Working portfolio desk: a question, ranked Technology exposure, a high-risk AUM answer, and the holdings explorer.](docs/demo.gif)
 
-[Quick start](#quick-start) · [Examples](#try-it) · [Verification](#verify-the-project) · [Calculation guide](docs/CALCULATIONS.md) · [Original brief](assessment/README.md)
+[Deliverables](#what-it-delivers) · [Quick start](#quick-start) · [Examples](#try-it) · [Verification](#verify-the-project) · [Calculation guide](docs/CALCULATIONS.md) · [Original brief](assessment/README.md)
+
+## What it delivers
+
+| Exercise item | Where to see it |
+| --- | --- |
+| ✅ Natural-language SQL tool | Validated read-only queries in `portfolio_agent/`; inspect SQL and parameters in answer evidence |
+| ✅ Sector exposure calculator | Stock weights grouped by sector, with bonds excluded and both percentage bases explained |
+| ✅ Command-line agent | Interactive or one-question `python -m portfolio_agent` |
+| ✅ Ground-truth evaluator | `evaluate.py` independently checks the supplied ten questions |
+| ✅ Documentation and safe errors | Setup guide, calculation notes, provider diagnostics, and explicit failure messages |
+| ✨ Optional desk | Streamlit answers, portfolio explorer, evidence, and CSV export |
+| ✨ Optional speed path | Conservative local planning, hybrid calculations, and a dataset-aware answer cache |
 
 ## Quick start
 
@@ -29,7 +47,7 @@ For a GitHub ZIP download, extract it and open a terminal in the folder that con
 python setup_project.py
 ```
 
-Setup creates `.venv`, installs the pinned dependencies, checks them, and creates `.env` without overwriting an existing key. The supplied examples and tests run **without an API key**. To enable Gemini planning for other in-scope questions, set `GEMINI_API_KEY` in your local `.env`; the default model is `gemini-3.5-flash-lite`. The key file is Git ignored. On macOS/Linux, use `python3 setup_project.py`.
+Setup creates `.venv`, installs the pinned dependencies, checks them, and creates `.env` without overwriting an existing key. The supplied examples and tests run **without an API key**. To enable Gemini planning for other in-scope questions, get a key from [Google AI Studio](https://aistudio.google.com/apikey) and set `GEMINI_API_KEY` in your local `.env`; the default model is `gemini-3.5-flash-lite`. The key file is Git ignored. On macOS/Linux, use `python3 setup_project.py`.
 
 ### 3. Run
 
@@ -76,16 +94,25 @@ After setup, run:
 .\.venv\Scripts\python.exe evaluate.py --cases tests\additional_questions.json --output reports\additional-local.json
 ```
 
-These checks need no key. The cleaned repository passes **10/10 supplied questions**, **9/9 additional development questions**, and **168 automated tests**. The [validation record](VALIDATION.md) and [retained reports](reports/README.md) distinguish local calculations from live model planning. GitHub Actions repeats setup, tests, and both local evaluations across Windows and Ubuntu with Python 3.11, 3.12, and 3.13.
+These checks need no key. GitHub Actions repeats setup, tests, and both local evaluations across Windows and Ubuntu with Python 3.11, 3.12, and 3.13.
 
 To test the Gemini route after setting a key:
 
 ```powershell
 .\.venv\Scripts\python.exe diagnose_gemini.py
-.\.venv\Scripts\python.exe evaluate.py --gemini-only --output reports\gemini-check.json
+.\.venv\Scripts\python.exe evaluate.py --gemini-only --delay 15 --output reports\gemini-check.json
 ```
 
-`--gemini-only` bypasses the fast local planner and consumes API quota. The last complete retained model run passed **10/10 supplied questions**; this is a development-set result, not a promise for arbitrary unseen questions. Provider timeouts are reported as unavailable, not converted into invented answers. The evaluator independently checks reference SQL and sector calculations, including ranked order.
+| Check | Recorded result | Route |
+| --- | ---: | --- |
+| Automated tests | **168 passed** | Keyless |
+| Supplied questions | **10/10**, 1.35 ms median | Local SQL/exposure |
+| Additional development questions | **9/9**, 1.24 ms median | Local SQL/exposure |
+| Supplied questions | **10/10**, 2.54 s median | Gemini-only |
+| Additional development questions | **9/9**, 1.62 s median | Gemini-only |
+| Clean-install CI | **6/6 jobs passed** | Windows/Ubuntu × Python 3.11–3.13 |
+
+`--gemini-only` bypasses the local planner and consumes API quota. The [validation record](VALIDATION.md) and [retained reports](reports/README.md) show exact cases and limits. All named sets were visible during development, so these scores do not guarantee arbitrary unseen answers. The 15-second spacing reduces burst-limit pressure; a provider outage or quota limit is reported as unavailable, never converted into an invented answer. The evaluator independently checks reference SQL and sector calculations, including ranked order. Per-question times exclude pacing delay, Python startup, and UI rendering.
 
 ## Design and scope
 
@@ -100,13 +127,6 @@ flowchart LR
     T --> D[(In-memory SQLite snapshot)]
     T --> A[Answer and evidence]
 ```
-
-| Exercise requirement | Delivered here |
-| --- | --- |
-| Natural-language SQL tool | Structured question plan, validated read-only SQL, bounded results |
-| Sector exposure tool | Deterministic stock-weight grouping with bond exclusion |
-| Command-line agent | `python -m portfolio_agent`, interactive or single-question mode |
-| Ground-truth evaluator | `evaluate.py`, independent reference checks and per-case reports |
 
 The local planner handles clearly recognized question shapes without a model call. Other in-scope questions use Gemini to propose a validated SQL, exposure, or combined plan. Python and SQLite calculate the numbers; the model does not supply them. Queries are read only, parameterized where locally planned, restricted to supplied tables/functions, and bounded by row, length, and execution limits. An unrelated request or investment-advice request receives scope guidance.
 
@@ -137,9 +157,10 @@ The answer cache stores only successful answers, with keys tied to the data, sch
 | A module is missing | Rerun `python setup_project.py` and use the `.venv` Python shown above. |
 | Gemini key is missing or rejected | Check your local `.env` and run `diagnose_gemini.py`. Local routes still work. |
 | Gemini is slow or unavailable | Retry later; provider latency varies. No guessed answer is substituted. |
+| Gemini reports a rate or quota limit | Wait for the provider limit to reset; use `--delay 15` for a live evaluation. Keyless local checks still work. |
 | Port 8501 is occupied | Use the existing desk or start with `--server.port 8502`. |
 | A question is ambiguous | State the portfolio, metric, period, and filters explicitly. |
 
 ## Provenance and license
 
-Created by **Jeel Soni** for the PL Capital AI Engineering exercise. The app is independent and is neither an official PL Capital service nor investment advice. Original code and documentation are [MIT licensed](LICENSE). The supplied assessment files and company mark have separate ownership and are excluded; see [third-party notices](THIRD_PARTY_NOTICES.md). The fixed dataset is historical sample data, not a live market feed.
+Created by **Jeel Nandha** for the PL Capital AI Engineering exercise. The app is independent and is neither an official PL Capital service nor investment advice. Original code and documentation are [MIT licensed](LICENSE). The supplied assessment files and company mark have separate ownership and are excluded; see [third-party notices](THIRD_PARTY_NOTICES.md). The fixed dataset is historical sample data, not a live market feed.
