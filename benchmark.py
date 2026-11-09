@@ -4,7 +4,7 @@ import argparse
 import statistics
 import time
 
-from jeel_portfolio.agent import PortfolioAgent
+from portfolio_agent.agent import PortfolioAgent
 
 
 def percentile(values, p):

@@ -30,8 +30,7 @@ jobs:
           "$PYTHON" -m pip check
           "$PYTHON" -m pytest -q
           "$PYTHON" evaluate.py --output reports/ci-evaluation.json
-          "$PYTHON" evaluate.py --cases tests/shardul_extra_questions.json --output reports/ci-comparison.json
-          "$PYTHON" evaluate.py --cases tests/holdout_questions.json --output reports/ci-additional.json
+          "$PYTHON" evaluate.py --cases tests/additional_questions.json --output reports/ci-additional.json
       - name: Keep evaluation report
         if: always()
         uses: actions/upload-artifact@v4

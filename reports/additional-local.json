@@ -6,16 +6,16 @@
   "attempted": 9,
   "planned_total": 9,
   "accuracy_pct": 100.0,
-  "median_latency_ms": 1.066,
+  "median_latency_ms": 1.239,
   "mode": "hybrid",
-  "note": "Supplied cases are development cases, not unseen holdout questions. A provider failure stops the live run and is not counted as a model accuracy miss.",
+  "note": "These are visible development cases, not a blind test. A provider failure stops the live run and is not counted as a model accuracy miss.",
   "cases": [
     {
       "id": 101,
       "question": "How many securities in this snapshot are bonds?",
       "pass": true,
       "route": "fast_sql",
-      "latency_ms": 5.397,
+      "latency_ms": 5.2878,
       "actual_columns": [
         "security_count"
       ],
@@ -42,7 +42,7 @@
       "question": "Which portfolios have no performance records? List their names.",
       "pass": true,
       "route": "fast_sql",
-      "latency_ms": 2.5965,
+      "latency_ms": 3.4534,
       "actual_columns": [
         "portfolio_name"
       ],
@@ -115,7 +115,7 @@
       "question": "List passive portfolio names and their AUM, largest first.",
       "pass": true,
       "route": "fast_sql",
-      "latency_ms": 0.8332,
+      "latency_ms": 0.9143,
       "actual_columns": [
         "portfolio_name",
         "total_aum"
@@ -161,7 +161,7 @@
       "question": "Show the sector allocation for the Balanced Portfolio.",
       "pass": true,
       "route": "fast_exposure",
-      "latency_ms": 1.4574,
+      "latency_ms": 1.3723,
       "actual_columns": [
         "sector",
         "exposure_pct"
@@ -230,7 +230,7 @@
       "question": "What is the equity-normalized sector exposure for the Balanced Portfolio?",
       "pass": true,
       "route": "fast_exposure",
-      "latency_ms": 0.5537,
+      "latency_ms": 0.656,
       "actual_columns": [
         "sector",
         "exposure_pct"
@@ -299,7 +299,7 @@
       "question": "What is the latest performance date for each portfolio with performance data?",
       "pass": true,
       "route": "fast_sql",
-      "latency_ms": 1.0658,
+      "latency_ms": 0.9349,
       "actual_columns": [
         "portfolio_name",
         "latest_date"
@@ -351,7 +351,7 @@
       "question": "Which portfolios hold both AAPL and MSFT, and what is their combined recorded weight as a percentage, highest first?",
       "pass": true,
       "route": "fast_sql",
-      "latency_ms": 2.1061,
+      "latency_ms": 2.8511,
       "actual_columns": [
         "portfolio_name",
         "combined_pct"
@@ -430,7 +430,7 @@
       "question": "Show the three portfolios with the largest recorded AUM.",
       "pass": true,
       "route": "fast_sql",
-      "latency_ms": 0.5786,
+      "latency_ms": 1.2386,
       "actual_columns": [
         "portfolio_name",
         "total_aum"
@@ -476,7 +476,7 @@
       "question": "What is the stock-sector exposure of Fixed Income Plus?",
       "pass": true,
       "route": "fast_exposure",
-      "latency_ms": 0.7429,
+      "latency_ms": 1.1331,
       "actual_columns": [
         "sector",
         "exposure_pct"

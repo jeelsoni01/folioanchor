@@ -37,7 +37,7 @@ def main():
         command = r".\.venv\Scripts\python.exe" if os.name == "nt" else "./.venv/bin/python"
         print("Setup complete. Existing .env, if present, was preserved.")
         print("Set GEMINI_API_KEY in .env for model-planned questions.")
-        print(f"CLI: {command} -m jeel_portfolio")
+        print(f"CLI: {command} -m portfolio_agent")
         print(f"Optional UI: {command} -m streamlit run app.py")
         return 0
     except (OSError, subprocess.CalledProcessError) as exc:

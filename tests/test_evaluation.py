@@ -1,5 +1,5 @@
 from evaluate import same_rows, reference_exposure, project_requested_columns
-from jeel_portfolio.database import ROOT
+from portfolio_agent.database import ROOT
 
 
 def test_reference_exposure_is_independent_and_excludes_bonds():
@@ -22,7 +22,7 @@ def test_evaluator_accepts_named_extra_fields_but_not_missing_fields():
 
 def test_provider_interruption_preserves_previous_complete_report(tmp_path, monkeypatch):
     import evaluate
-    from jeel_portfolio.database import Database
+    from portfolio_agent.database import Database
     class UnavailableAgent:
         def __init__(self, cache=False):
             self.db = Database()

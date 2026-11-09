@@ -1,8 +1,8 @@
 import pytest
 from streamlit.testing.v1 import AppTest
 
-from jeel_portfolio.agent import PortfolioAgent
-from jeel_portfolio.database import ROOT
+from portfolio_agent.agent import PortfolioAgent
+from portfolio_agent.database import ROOT
 
 
 @pytest.mark.parametrize(("question", "term"), [

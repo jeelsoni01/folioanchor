@@ -8,7 +8,7 @@ import time
 import httpx
 from dotenv import dotenv_values, load_dotenv
 
-from jeel_portfolio.database import ROOT
+from portfolio_agent.database import ROOT
 
 
 def bounded(label, method, url, key, **kwargs):

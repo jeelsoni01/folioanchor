@@ -7,9 +7,9 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 
-from jeel_portfolio.agent import PortfolioAgent
-from jeel_portfolio.exposure import calculate_exposure
-from jeel_portfolio.presentation import LABELS, present_answer
+from portfolio_agent.agent import PortfolioAgent
+from portfolio_agent.exposure import calculate_exposure
+from portfolio_agent.presentation import LABELS, present_answer
 
 
 st.set_page_config(page_title="PL Capital | Portfolio Intelligence", page_icon="◈", layout="wide")

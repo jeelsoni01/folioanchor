@@ -5,12 +5,12 @@ import tomllib
 
 from streamlit.testing.v1 import AppTest
 
-from jeel_portfolio.database import ROOT
+from portfolio_agent.database import ROOT
 
 
 def test_cli_returns_structured_answer_without_provider():
     completed = subprocess.run(
-        [sys.executable, "-m", "jeel_portfolio", "--no-cache", "--json",
+        [sys.executable, "-m", "portfolio_agent", "--no-cache", "--json",
          "How many portfolios do we have in total?"],
         cwd=ROOT, capture_output=True, text=True, timeout=20,
     )

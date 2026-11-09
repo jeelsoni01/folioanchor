@@ -1,13 +1,11 @@
-# Reproducible checks
+# Retained evaluation evidence
 
-These JSON files record development checks; the repository workflow reruns the local ones on each push and pull request. `evaluation-current.json` is the supplied ten-question set. `shardul-extra-local.json` is the eight additional questions from the comparison repository; `holdout-local-new.json` is another nine-question development set. All three use the local SQL/exposure routes, so their scores do not measure Gemini accuracy.
+| File | Meaning |
+| --- | --- |
+| `local-evaluation.json` | Supplied ten-question evaluation through the normal local-first route |
+| `additional-local.json` | Nine additional development questions through the normal route |
+| `gemini-only.json` | Complete live Gemini-only run over the supplied ten questions |
 
-`gemini-current-rerun.json` is a complete 10/10 live model-planning run. `gemini-current-interrupted.json` and `shardul-extra-gemini-current-interrupted.json` show separate provider timeouts; their unrun cases have no accuracy result. No API key is stored in these reports.
+The first two reports test deterministic local planning and calculations; they are **not** evidence of Gemini accuracy. The third bypasses local planning and records provider latency. All cases were visible during development and are not a blind benchmark. A provider outage is tracked as unavailable rather than an accuracy miss.
 
-To regenerate the main local check from the repository root:
-
-```powershell
-.\.venv\Scripts\python.exe evaluate.py --output reports\evaluation-current.json
-.\.venv\Scripts\python.exe evaluate.py --cases tests\shardul_extra_questions.json --output reports\shardul-extra-local.json
-.\.venv\Scripts\python.exe evaluate.py --cases tests\holdout_questions.json --output reports\holdout-local-new.json
-```
+Regenerate the local reports with the commands in the root [README](../README.md#verify-the-project). A fresh Gemini run requires your own API key; write it to a new ignored report such as `reports/gemini-check.json`, leaving the retained evidence intact.

@@ -2,10 +2,10 @@ from pathlib import Path
 
 import pytest
 
-from jeel_portfolio.agent import PortfolioAgent
-from jeel_portfolio.cache import AnswerCache
-from jeel_portfolio.database import DataError, Database, ROOT
-from jeel_portfolio.exposure import calculate_exposure, resolve_portfolio
+from portfolio_agent.agent import PortfolioAgent
+from portfolio_agent.cache import AnswerCache
+from portfolio_agent.database import DataError, Database, ROOT
+from portfolio_agent.exposure import calculate_exposure, resolve_portfolio
 
 
 @pytest.fixture
@@ -76,7 +76,7 @@ def test_cache_key_changes_with_dataset_and_model(tmp_path):
 def test_agent_uses_gemini_for_unseen_question_without_eval_answer_lookup(monkeypatch):
     agent = PortfolioAgent(cache=False)
     try:
-        from jeel_portfolio.planner import Plan
+        from portfolio_agent.planner import Plan
         called = []
         def fake(question, db, previous_error=""):
             called.append(question)
@@ -93,7 +93,7 @@ def test_agent_uses_gemini_for_unseen_question_without_eval_answer_lookup(monkey
 def test_gemini_only_mode_bypasses_fast_path(monkeypatch):
     agent = PortfolioAgent(cache=False)
     try:
-        from jeel_portfolio.planner import Plan
+        from portfolio_agent.planner import Plan
         seen = []
         def fake(question, db, previous_error=""):
             seen.append(question)
@@ -109,7 +109,7 @@ def test_gemini_only_mode_bypasses_fast_path(monkeypatch):
 def test_gemini_sql_repair_is_bounded(monkeypatch):
     agent = PortfolioAgent(cache=False)
     try:
-        from jeel_portfolio.planner import Plan
+        from portfolio_agent.planner import Plan
         plans = iter([Plan(tool="sql", sql="SELECT absent FROM portfolios"), Plan(tool="sql", sql="SELECT COUNT(*) FROM portfolios")])
         calls = []
         def fake(question, db, previous_error=""):
@@ -126,7 +126,7 @@ def test_gemini_sql_repair_is_bounded(monkeypatch):
 def test_provider_failure_is_separate_from_wrong_answer(monkeypatch):
     agent = PortfolioAgent(cache=False)
     try:
-        from jeel_portfolio.planner import ProviderUnavailable
+        from portfolio_agent.planner import ProviderUnavailable
         def fail(*_):
             raise ProviderUnavailable("Service temporarily unavailable")
         monkeypatch.setattr(agent.planner, "plan", fail)
@@ -155,7 +155,7 @@ def test_hybrid_filters_portfolios_then_uses_exposure_calculator():
 def test_hybrid_rejects_invalid_cohort_sql(monkeypatch):
     agent = PortfolioAgent(cache=False)
     try:
-        from jeel_portfolio.planner import Plan
+        from portfolio_agent.planner import Plan
         monkeypatch.setattr(agent.planner, "plan", lambda *_: Plan(tool="hybrid", sql="SELECT portfolio_name,total_aum FROM portfolios", sector="Technology"))
         result = agent.answer("Compare Tech concentration")
         assert result["status"] == "error"
@@ -167,7 +167,7 @@ def test_hybrid_rejects_invalid_cohort_sql(monkeypatch):
 def test_provider_wall_timeout_is_bounded(monkeypatch, db):
     import time
     from types import SimpleNamespace
-    from jeel_portfolio.planner import GeminiPlanner, ProviderUnavailable
+    from portfolio_agent.planner import GeminiPlanner, ProviderUnavailable
     monkeypatch.setenv("GEMINI_API_KEY", "test-key")
     planner = GeminiPlanner("test-model")
     def slow(**_):
@@ -190,7 +190,7 @@ def test_provider_wall_timeout_is_bounded(monkeypatch, db):
 
 def test_invalid_model_plan_gets_one_correction(monkeypatch, db):
     from types import SimpleNamespace
-    from jeel_portfolio.planner import GeminiPlanner
+    from portfolio_agent.planner import GeminiPlanner
     monkeypatch.setenv("GEMINI_API_KEY", "test-key")
     planner = GeminiPlanner("test-model")
     responses = iter(['{"not_a_plan":true}', '{"tool":"sql","sql":"SELECT COUNT(*) FROM portfolios"}'])
@@ -205,7 +205,7 @@ def test_invalid_model_plan_gets_one_correction(monkeypatch, db):
 
 def test_repeated_uncached_gemini_question_starts_a_new_request(monkeypatch, db):
     from types import SimpleNamespace
-    from jeel_portfolio.planner import GeminiPlanner
+    from portfolio_agent.planner import GeminiPlanner
 
     monkeypatch.setenv("GEMINI_API_KEY", "test-key")
     planner = GeminiPlanner("test-model")
@@ -252,7 +252,7 @@ def test_market_value_breakdown_rejects_zero_fill_and_repairs(monkeypatch):
     agent = PortfolioAgent(cache=False)
     try:
         question = "For each portfolio, show the total value of Technology sector holdings and what percentage it represents of the total portfolio value"
-        from jeel_portfolio.planner import Plan
+        from portfolio_agent.planner import Plan
         valid = agent._fast_plan(question)
         wrong = Plan(tool="sql", sql="SELECT portfolio_name,0 AS sector_value,1 AS total_value,0 AS sector_percentage FROM portfolios")
         plans = iter([wrong, valid])
@@ -271,7 +271,7 @@ def test_market_value_breakdown_rejects_zero_fill_and_repairs(monkeypatch):
 def test_transient_read_error_retries_once(monkeypatch, db):
     from types import SimpleNamespace
     import httpx
-    from jeel_portfolio.planner import GeminiPlanner
+    from portfolio_agent.planner import GeminiPlanner
     monkeypatch.setenv("GEMINI_API_KEY", "test-key")
     planner = GeminiPlanner("test-model")
     calls = []
@@ -289,7 +289,7 @@ def test_total_aum_plan_and_value_are_guarded(monkeypatch):
     agent = PortfolioAgent(cache=False)
     try:
         question = "What is the total Assets Under Management (AUM) for portfolios with high target risk level?"
-        from jeel_portfolio.planner import Plan
+        from portfolio_agent.planner import Plan
         wrong = Plan(tool="sql", sql="SELECT total_aum FROM portfolios WHERE target_risk_level='High'")
         correct = agent._fast_plan(question)
         plans = iter([wrong, correct])
@@ -309,7 +309,7 @@ def test_total_aum_plan_and_value_are_guarded(monkeypatch):
 def test_total_aum_with_creation_date_accepts_the_smaller_correct_cohort(monkeypatch):
     agent = PortfolioAgent(cache=False)
     try:
-        from jeel_portfolio.planner import Plan
+        from portfolio_agent.planner import Plan
         question = "What is the total AUM for high-risk portfolios created after 2023-02-01?"
         sql = "SELECT SUM(total_aum) FROM portfolios WHERE lower(target_risk_level)='high' AND creation_date > :cutoff"
         plan = Plan(tool="sql", sql=sql, parameters=[{"name": "cutoff", "value": "2023-02-01"}])
@@ -326,7 +326,7 @@ def test_total_aum_with_creation_date_accepts_the_smaller_correct_cohort(monkeyp
 def test_total_aum_creation_date_cannot_be_silently_dropped(monkeypatch):
     agent = PortfolioAgent(cache=False)
     try:
-        from jeel_portfolio.planner import Plan
+        from portfolio_agent.planner import Plan
         question = "What is the total AUM for high-risk portfolios created after 2023-02-01?"
         incomplete = Plan(tool="sql", sql="SELECT SUM(total_aum) FROM portfolios WHERE lower(target_risk_level)='high'")
         feedback = []

@@ -7,10 +7,10 @@ from decimal import Decimal
 import pytest
 from pydantic import ValidationError
 
-from jeel_portfolio.cache import AnswerCache
-from jeel_portfolio.database import DataError, Database, ROOT
-from jeel_portfolio.exposure import calculate_exposure, resolve_portfolio
-from jeel_portfolio.planner import Plan
+from portfolio_agent.cache import AnswerCache
+from portfolio_agent.database import DataError, Database, ROOT
+from portfolio_agent.exposure import calculate_exposure, resolve_portfolio
+from portfolio_agent.planner import Plan
 
 
 def read_csv(name):

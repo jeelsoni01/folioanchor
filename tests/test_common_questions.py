@@ -2,8 +2,8 @@
 
 import pytest
 
-from jeel_portfolio.agent import PortfolioAgent
-from jeel_portfolio.database import DataError
+from portfolio_agent.agent import PortfolioAgent
+from portfolio_agent.database import DataError
 
 
 @pytest.mark.parametrize(("question", "reference"), [

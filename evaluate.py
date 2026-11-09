@@ -9,8 +9,8 @@ import time
 from collections import defaultdict
 from pathlib import Path
 
-from jeel_portfolio.agent import PortfolioAgent
-from jeel_portfolio.database import ROOT
+from portfolio_agent.agent import PortfolioAgent
+from portfolio_agent.database import ROOT
 
 
 def reference_exposure(root: Path, name: str, basis: str = "portfolio"):
@@ -106,7 +106,7 @@ def run(ids=None, output=None, delay=0, gemini_only=False, cases_path=None):
     unavailable_count = sum(r["pass"] is None for r in records)
     planned_total = len([case for case in cases if not ids or case["id"] in ids])
     completed = unavailable_count == 0 and len(records) == planned_total
-    report = {"status":"complete" if completed else "interrupted","passed":passed_count,"failed":failed_count,"unavailable":unavailable_count,"attempted":len(records),"planned_total":planned_total,"accuracy_pct":round(100*passed_count/planned_total,2) if planned_total and completed else None,"median_latency_ms":round(statistics.median(latencies),3) if latencies else None,"mode":"gemini_only" if gemini_only else "hybrid","note":"Supplied cases are development cases, not unseen holdout questions. A provider failure stops the live run and is not counted as a model accuracy miss.","cases":records}
+    report = {"status":"complete" if completed else "interrupted","passed":passed_count,"failed":failed_count,"unavailable":unavailable_count,"attempted":len(records),"planned_total":planned_total,"accuracy_pct":round(100*passed_count/planned_total,2) if planned_total and completed else None,"median_latency_ms":round(statistics.median(latencies),3) if latencies else None,"mode":"gemini_only" if gemini_only else "hybrid","note":"These are visible development cases, not a blind test. A provider failure stops the live run and is not counted as a model accuracy miss.","cases":records}
     if output:
         destination = output if completed else interrupted_path
         destination.write_text(json.dumps(report, indent=2), encoding="utf-8")

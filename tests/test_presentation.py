@@ -1,8 +1,8 @@
 from streamlit.testing.v1 import AppTest
 
-from jeel_portfolio.agent import PortfolioAgent
-from jeel_portfolio.database import ROOT
-from jeel_portfolio.presentation import present_answer
+from portfolio_agent.agent import PortfolioAgent
+from portfolio_agent.database import ROOT
+from portfolio_agent.presentation import present_answer
 
 
 QUESTION = "Which active high-risk portfolio has the highest Technology exposure?"

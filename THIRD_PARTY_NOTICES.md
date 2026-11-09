@@ -1,6 +1,5 @@
-# Third-party material in this exercise repository
+# Third-party materials
 
-- The supplied PL Capital assessment data, schema, reference questions, and brief remain the property of their respective owners. This repository does not grant rights to them.
-- The PL Capital logo in `assets/pl-capital.svg` is used to identify the assessment context. The mark belongs to PL Capital and does not imply endorsement.
-- `tests/shardul_extra_questions.json` contains eight comparison questions from Shardul Narvekar's Holdings Desk project. Its project MIT license is retained in `tests/LICENSE-shardul.txt`. The comparison set is included so the local 8/8 result can be reproduced from this repository alone.
+- The supplied exercise files in `data/` and `assessment/`, plus `database_schema.sql` and `ground_truth_dataset.json`, belong to their respective owner. They are excluded from the project's MIT license. This repository grants no additional rights to those files.
+- `assets/pl-capital.svg` is the PL Capital mark. It is used only to identify the assessment context, remains its owner's property, and is excluded from the MIT license. The interface is an independent exercise, not an official service.
 - Python dependencies retain their own licenses.
