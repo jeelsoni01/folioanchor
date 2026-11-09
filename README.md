@@ -1,8 +1,8 @@
-# 📊 Portfolio Intelligence
+# ⚓ FolioAnchor
 
-**Portfolio questions. Clear answers. Visible math.**
+**Portfolio intelligence, anchored in the numbers.**
 
-Ask what a fund owns, compare sector exposure, and explore AUM or risk across portfolios. Portfolio Intelligence turns those questions into clear answers from the supplied holdings snapshot, with the numbers behind every result ready to inspect.
+Ask what a fund owns, compare sector exposure, and explore AUM or risk across portfolios. FolioAnchor turns those questions into clear answers from the supplied holdings snapshot, with the numbers behind every result ready to inspect.
 
 **Python + SQLite** · **Gemini planning** · **Streamlit workspace**
 
@@ -12,7 +12,11 @@ Ask what a fund owns, compare sector exposure, and explore AUM or risk across po
 
 ![Working portfolio desk: a question, ranked Technology exposure, a high-risk AUM answer, and the holdings explorer.](docs/demo.gif)
 
-[Features](#features) · [Quick start](#quick-start) · [Explore questions](#try-it) · [Verification](#verify-the-project) · [Calculation guide](docs/CALCULATIONS.md)
+[The name](#why-folioanchor) · [Features](#features) · [Quick start](#quick-start) · [Explore questions](#try-it) · [Verification](#verify-the-project) · [Calculation guide](docs/CALCULATIONS.md)
+
+## Why FolioAnchor?
+
+A **folio** is the portfolio you want to understand. An **anchor** is the recorded fact that holds an answer in place. The desk follows that idea from question to result: it calculates from the supplied holdings, weights, and AUM, then lets you inspect the data and workings behind the answer.
 
 ## Features
 
@@ -33,8 +37,8 @@ Use **64-bit Python 3.11–3.13**. No database server, Docker, Node.js, or manua
 Clone the private repository:
 
 ```powershell
-git clone https://github.com/jeelsoni01/pl-capital-portfolio-agent.git
-cd pl-capital-portfolio-agent
+git clone https://github.com/jeelsoni01/folioanchor.git
+cd folioanchor
 ```
 
 For a GitHub ZIP download, extract it and open a terminal in the folder that contains `setup_project.py`.

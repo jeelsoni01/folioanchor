@@ -1,4 +1,4 @@
-"""PL Capital assessment workspace for the portfolio agent."""
+"""FolioAnchor portfolio intelligence workspace."""
 
 import base64
 import html
@@ -12,7 +12,7 @@ from portfolio_agent.exposure import calculate_exposure
 from portfolio_agent.presentation import LABELS, present_answer
 
 
-st.set_page_config(page_title="PL Capital | Portfolio Intelligence", page_icon="◈", layout="wide")
+st.set_page_config(page_title="FolioAnchor | Portfolio Intelligence", page_icon="◈", layout="wide")
 
 # HERO: The official four-part PL Capital mark anchors an original research-desk
 # masthead with live snapshot counts and a fine ledger grid.
@@ -135,7 +135,7 @@ def render_percentage_bars(rows, title):
 st.markdown(f"""
 <div class="desk-topline">
   <div class="desk-brand"><img src="data:image/svg+xml;base64,{logo_data}" alt="PL Capital — Prabhudas Lilladher"></div>
-  <div class="desk-topnote">AI Engineering Exercise · Portfolio Research</div>
+  <div class="desk-topnote">FolioAnchor · Portfolio Research</div>
 </div>""", unsafe_allow_html=True)
 st.markdown(f"""
 <div class="desk-hero">
