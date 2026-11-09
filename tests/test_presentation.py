@@ -34,3 +34,16 @@ def test_streamlit_shows_full_comparison_without_a_single_bar_chart():
     assert "Compared 4 recorded portfolios" in markup
     assert "Technology exposure across 4 portfolios" in markup
     assert "comparison-row" in markup
+
+
+def test_risk_filtered_aum_answer_names_cohort_and_unit_limit():
+    agent = PortfolioAgent(cache=False)
+    try:
+        result = agent.answer(
+            "What is the total Assets Under Management (AUM) for portfolios with high target risk level?"
+        )
+        lead, context = present_answer(result)
+        assert lead == "Portfolios with high target risk have 85,000,000 in recorded AUM."
+        assert "no currency is specified" in context
+    finally:
+        agent.close()

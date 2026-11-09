@@ -47,6 +47,13 @@ def present_answer(result: dict) -> tuple[str, str]:
 
     if len(rows) == len(columns) == 1:
         label = LABELS.get(columns[0], columns[0].replace("_", " ").capitalize())
+        if columns[0] == "total_aum":
+            risk = evidence.get("parameters", {}).get("risk")
+            if risk in {"low", "medium", "high"}:
+                return (
+                    f"Portfolios with {risk} target risk have {display_value(rows[0][0])} in recorded AUM.",
+                    "AUM is the supplied portfolio total, summed across matching portfolios; no currency is specified in the dataset.",
+                )
         return f"{label}: {display_value(rows[0][0])}", "Calculated from the supplied portfolio snapshot."
 
     if "cost_basis" in columns and "symbol" in columns and rows:

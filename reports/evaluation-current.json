@@ -6,7 +6,7 @@
   "attempted": 10,
   "planned_total": 10,
   "accuracy_pct": 100.0,
-  "median_latency_ms": 1.781,
+  "median_latency_ms": 2.017,
   "mode": "hybrid",
   "note": "Supplied cases are development cases, not unseen holdout questions. A provider failure stops the live run and is not counted as a model accuracy miss.",
   "cases": [
@@ -15,7 +15,7 @@
       "question": "How many portfolios do we have in total?",
       "pass": true,
       "route": "fast_sql",
-      "latency_ms": 6.7969,
+      "latency_ms": 6.4346,
       "actual_columns": [
         "portfolio_count"
       ],
@@ -40,7 +40,7 @@
       "question": "What are the names of all active portfolios?",
       "pass": true,
       "route": "fast_sql",
-      "latency_ms": 0.7541,
+      "latency_ms": 1.0049,
       "actual_columns": [
         "portfolio_name"
       ],
@@ -121,7 +121,7 @@
       "question": "Which securities are in the Technology sector?",
       "pass": true,
       "route": "fast_sql",
-      "latency_ms": 0.9672,
+      "latency_ms": 1.1764,
       "actual_columns": [
         "symbol",
         "company_name"
@@ -207,7 +207,7 @@
       "question": "What is the total Assets Under Management (AUM) for portfolios with high target risk level?",
       "pass": true,
       "route": "fast_sql",
-      "latency_ms": 1.7724,
+      "latency_ms": 2.281,
       "actual_columns": [
         "total_aum"
       ],
@@ -234,7 +234,7 @@
       "question": "Show me the top 5 holdings by cost basis in the Growth Equity Fund",
       "pass": true,
       "route": "fast_sql",
-      "latency_ms": 2.2407,
+      "latency_ms": 2.121,
       "actual_columns": [
         "holding_id",
         "symbol",
@@ -330,7 +330,7 @@
       "question": "What is the average current price of securities in each sector?",
       "pass": true,
       "route": "fast_sql",
-      "latency_ms": 0.7442,
+      "latency_ms": 0.6861,
       "actual_columns": [
         "sector_name",
         "avg_price"
@@ -406,7 +406,7 @@
       "question": "For each portfolio, show the total value of Technology sector holdings and what percentage it represents of the total portfolio value",
       "pass": true,
       "route": "fast_sql",
-      "latency_ms": 2.3883,
+      "latency_ms": 2.009,
       "actual_columns": [
         "portfolio_name",
         "sector_value",
@@ -526,7 +526,7 @@
       "question": "Find portfolios that have holdings in more than 5 different sectors and show their diversification metrics",
       "pass": true,
       "route": "fast_sql",
-      "latency_ms": 1.7165,
+      "latency_ms": 1.5715,
       "actual_columns": [
         "portfolio_name",
         "sector_count",
@@ -562,7 +562,7 @@
       "question": "What are the sector exposures for the Tech Innovation Fund?",
       "pass": true,
       "route": "fast_exposure",
-      "latency_ms": 1.7888,
+      "latency_ms": 2.1604,
       "actual_columns": [
         "sector",
         "exposure_pct"
@@ -635,7 +635,7 @@
       "question": "Calculate the sector exposure breakdown for international equity",
       "pass": true,
       "route": "fast_exposure",
-      "latency_ms": 2.3845,
+      "latency_ms": 2.0257,
       "actual_columns": [
         "sector",
         "exposure_pct"
